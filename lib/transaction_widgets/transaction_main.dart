@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../models/transaction.dart';
@@ -33,11 +34,26 @@ class _TransactionsState extends State<Transactions> {
     ),
   ];
 
+  void _addTransaction(String title, int amount) {
+    Random rng = Random();
+    int newID = rng.nextInt(9999999) + 1000000;
+    final newTrxn = Transaction(
+      id: newID.toString(),
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transactions.add(newTrxn);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AddTransaction(_transactions),
+        AddTransaction(_addTransaction),
         TransactionList(_transactions),
       ],
     );

@@ -32,11 +32,13 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Column(
-          children: [
-            Chart(),
-            Transactions(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Chart(),
+              Transactions(),
+            ],
+          ),
         ),
       ),
     );

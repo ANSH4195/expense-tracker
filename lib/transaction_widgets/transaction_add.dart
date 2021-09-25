@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../models/transaction.dart';
-
 class AddTransaction extends StatelessWidget {
-  final List<Transaction> transactions;
-  AddTransaction(this.transactions, {Key? key}) : super(key: key);
+  final void Function(String title, int amount) addTransaction;
+  AddTransaction(this.addTransaction, {Key? key}) : super(key: key);
 
   final titleController = TextEditingController();
   final amountController = TextEditingController();
@@ -33,7 +31,10 @@ class AddTransaction extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 10),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  addTransaction(
+                      titleController.text, int.parse(amountController.text));
+                },
                 child: Text(
                   'Add Transaction',
                   style: TextStyle(
@@ -41,7 +42,12 @@ class AddTransaction extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                style: TextButton.styleFrom(primary: Colors.purpleAccent),
+                style: TextButton.styleFrom(
+                  primary: Colors.purpleAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
               ),
             )
           ],
