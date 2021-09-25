@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import './chart.dart';
-import './transaction_widgets/transaction_main.dart';
+import './models/transaction.dart';
+import './transaction_widgets/transaction_add.dart';
+import './transaction_widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Expense Manager',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
@@ -20,15 +24,71 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   final String title;
   MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: 'AEX564',
+      title: "New Shoes",
+      amount: 3450,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'HYA599',
+      title: "Groceries",
+      amount: 1455,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'OIJ932',
+      title: "Electricity Bill",
+      amount: 550,
+      date: DateTime.now(),
+    ),
+  ];
+
+  void _addTransaction(String title, int amount) {
+    Random rng = Random();
+    int newID = rng.nextInt(9999999) + 1000000;
+    final newTrxn = Transaction(
+      id: newID.toString(),
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transactions.add(newTrxn);
+    });
+  }
+
+  void _showAddModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return AddTransaction(_addTransaction);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () => _showAddModal(context),
+            icon: Icon(Icons.add),
+          )
+        ],
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -36,11 +96,24 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             children: [
               Chart(),
-              Transactions(),
+              TransactionList(_transactions),
             ],
           ),
         ),
       ),
+      floatingActionButton: ElevatedButton.icon(
+        icon: Icon(Icons.add),
+        label: Text('Add'),
+        onPressed: () => _showAddModal(context),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.purpleAccent,
+          fixedSize: Size(100, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
