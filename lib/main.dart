@@ -17,7 +17,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expense Manager',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.purple,
+        ).copyWith(
+          secondary: Colors.purpleAccent,
+        ),
+        fontFamily: 'FiraSans',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              caption: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+              bodyText1: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              bodyText2: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
       ),
       home: MyHomePage(title: 'Expense Manager'),
     );
@@ -106,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: Text('Add'),
         onPressed: () => _showAddModal(context),
         style: ElevatedButton.styleFrom(
-          primary: Colors.purpleAccent,
+          primary: Theme.of(context).colorScheme.secondary,
           fixedSize: Size(100, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),

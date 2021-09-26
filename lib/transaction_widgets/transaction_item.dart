@@ -30,17 +30,11 @@ class TransactionItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   Text(
                     DateFormat('EEEE, MMMM d, y').format(date),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+                    style: Theme.of(context).textTheme.caption,
                   ),
                 ],
               ),
@@ -48,15 +42,11 @@ class TransactionItem extends StatelessWidget {
             Container(
               child: Text(
                 '₹ $amount',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
-                color: Colors.purpleAccent,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             ),
