@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import './chart.dart';
+import './chart_widgets/chart_list.dart';
 import './models/transaction.dart';
 import './transaction_widgets/transaction_add.dart';
 import './transaction_widgets/transaction_list.dart';
@@ -58,21 +58,31 @@ class _MyHomePageState extends State<MyHomePage> {
       id: 'AEX564',
       title: "New Shoes",
       amount: 3450,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 0)),
     ),
     Transaction(
       id: 'HYA599',
       title: "Groceries",
       amount: 1455,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 2)),
     ),
     Transaction(
       id: 'OIJ932',
       title: "Electricity Bill",
       amount: 550,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 4)),
     ),
   ];
+
+  List<Transaction> get _lastWeekTransactions {
+    return _transactions.where((trx) {
+      return trx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addTransaction(String title, int amount) {
     Random rng = Random();
@@ -115,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Chart(),
+              ChartList(_lastWeekTransactions),
               TransactionList(_transactions),
             ],
           ),

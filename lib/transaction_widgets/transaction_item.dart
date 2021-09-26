@@ -16,7 +16,7 @@ class TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -45,7 +45,7 @@ class TransactionItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Theme.of(context).colorScheme.secondary,
               ),
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
