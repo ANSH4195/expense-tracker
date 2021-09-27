@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Expense Manager',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.deepPurple,
         ).copyWith(
-          secondary: Colors.purpleAccent,
+          secondary: Colors.deepPurpleAccent,
         ),
         fontFamily: 'FiraSans',
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -39,6 +39,31 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ).copyWith(
+          secondary: Colors.deepPurpleAccent,
+        ),
+        fontFamily: 'FiraSans',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              caption: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+              bodyText1: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              bodyText2: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+      ),
+      themeMode: ThemeMode.dark,
       home: MyHomePage(title: 'Expense Manager'),
     );
   }
@@ -99,6 +124,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _deleteTransaction(String delId) {
+    int idx = 0;
+    for (var i = 0; i < _transactions.length; i++) {
+      if (_transactions[i].id == delId) {
+        idx = i;
+        break;
+      }
+    }
+    setState(() {
+      _transactions.removeAt(idx);
+    });
+  }
+
   void _showAddModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -126,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               ChartList(_lastWeekTransactions),
-              TransactionList(_transactions),
+              TransactionList(_transactions, _deleteTransaction),
             ],
           ),
         ),

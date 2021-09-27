@@ -23,7 +23,7 @@ class ChartList extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': daySum,
       };
-    });
+    }).reversed.toList();
   }
 
   int get totalSpendings {
