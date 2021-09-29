@@ -29,6 +29,7 @@ class TransactionItem extends StatelessWidget {
           icon: Icon(Icons.close),
           padding: EdgeInsets.all(6),
           tooltip: 'Remove this transaction',
+          color: Colors.redAccent,
         ),
         title: Text(
           title,

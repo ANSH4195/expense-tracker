@@ -109,14 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addTransaction(String title, int amount) {
+  void _addTransaction(String title, int amount, DateTime chosenDate) {
     Random rng = Random();
     int newID = rng.nextInt(9999999) + 1000000;
     final newTrxn = Transaction(
       id: newID.toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: chosenDate,
     );
 
     setState(() {
@@ -125,16 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _deleteTransaction(String delId) {
-    int idx = 0;
-    for (var i = 0; i < _transactions.length; i++) {
-      if (_transactions[i].id == delId) {
-        idx = i;
-        break;
-      }
-    }
-    setState(() {
-      _transactions.removeAt(idx);
-    });
+    setState(() => _transactions.removeWhere((trx) => trx.id == delId));
   }
 
   void _showAddModal(BuildContext context) {
