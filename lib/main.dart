@@ -82,13 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
       id: 'AEX564',
       title: "New Shoes",
-      amount: 3450,
+      amount: 345,
       date: DateTime.now().subtract(Duration(days: 0)),
     ),
     Transaction(
       id: 'HYA599',
       title: "Groceries",
-      amount: 1455,
+      amount: 425,
       date: DateTime.now().subtract(Duration(days: 2)),
     ),
     Transaction(
@@ -96,6 +96,24 @@ class _MyHomePageState extends State<MyHomePage> {
       title: "Electricity Bill",
       amount: 550,
       date: DateTime.now().subtract(Duration(days: 4)),
+    ),
+    Transaction(
+      id: 'AEJ564',
+      title: "New Shoes",
+      amount: 669,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 'HYA899',
+      title: "Groceries",
+      amount: 526,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 'OIJ232',
+      title: "Electricity Bill",
+      amount: 395,
+      date: DateTime.now().subtract(Duration(days: 5)),
     ),
   ];
 
@@ -139,6 +157,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final useableHeight = MediaQuery.of(context).size.height -
+        kToolbarHeight -
+        MediaQuery.of(context).padding.top;
+    final useableWidth = MediaQuery.of(context).size.width - 20;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -150,15 +174,41 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ChartList(_lastWeekTransactions),
-              TransactionList(_transactions, _deleteTransaction),
-            ],
-          ),
-        ),
+        margin: EdgeInsets.all(10),
+        child: isPortrait
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: (useableHeight - 20) * 0.25,
+                      child: ChartList(_lastWeekTransactions),
+                    ),
+                    SizedBox(
+                      height: (useableHeight - 20) * 0.65,
+                      child: TransactionList(_transactions, _deleteTransaction),
+                    ),
+                  ],
+                ),
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: useableWidth * 0.33,
+                    child: ChartList(_lastWeekTransactions),
+                  ),
+                  SizedBox(
+                    width: useableWidth * 0.02,
+                  ),
+                  SizedBox(
+                    width: useableWidth * 0.65,
+                    child: SizedBox(
+                      height: useableHeight * 0.8,
+                      child: TransactionList(_transactions, _deleteTransaction),
+                    ),
+                  ),
+                ],
+              ),
       ),
       floatingActionButton: ElevatedButton.icon(
         icon: Icon(Icons.add),

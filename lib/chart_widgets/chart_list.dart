@@ -8,8 +8,8 @@ class ChartList extends StatelessWidget {
   final List<Transaction> recentTransactions;
   const ChartList(this.recentTransactions, {Key? key}) : super(key: key);
 
-  List<Map<String, Object>> get chartValues {
-    return List.generate(7, (index) {
+  List<Map<String, Object>> chartValues(bool isPortrait) {
+    final values = List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
       int daySum = 0;
       for (var trx in recentTransactions) {
@@ -23,11 +23,16 @@ class ChartList extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': daySum,
       };
-    }).reversed.toList();
+    });
+    if (isPortrait) {
+      return values.reversed.toList();
+    } else {
+      return values;
+    }
   }
 
   int get totalSpendings {
-    return chartValues.fold(
+    return chartValues(false).fold(
       0,
       (previousValue, trx) => previousValue + (trx['amount'] as int),
     );
@@ -35,6 +40,8 @@ class ChartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Card(
       color: Theme.of(context).colorScheme.secondary,
       margin: EdgeInsets.only(bottom: 15),
@@ -44,32 +51,35 @@ class ChartList extends StatelessWidget {
       elevation: 3,
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Text(
-              'Past Week Spendings',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Divider(
-              color: Colors.white70,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: chartValues.map((trx) {
-                final percent = (trx['amount'] as int) / totalSpendings;
-                return Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                    label: (trx['day'] as String),
-                    spent: (trx['amount'] as int),
-                    spentPercentage: percent,
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+        child: isPortrait
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: chartValues(isPortrait).map((trx) {
+                  final percent = (trx['amount'] as int) / totalSpendings;
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                      label: (trx['day'] as String),
+                      spent: (trx['amount'] as int),
+                      spentPercentage: percent,
+                    ),
+                  );
+                }).toList(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: chartValues(isPortrait).map((trx) {
+                  final percent = (trx['amount'] as int) / totalSpendings;
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                      label: (trx['day'] as String),
+                      spent: (trx['amount'] as int),
+                      spentPercentage: percent,
+                    ),
+                  );
+                }).toList(),
+              ),
       ),
     );
   }
